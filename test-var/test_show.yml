@@ -1,0 +1,15 @@
+### ansible-playbook --extra-vars hostnames=pbhost test_show.yml  --ask-vault-pass
+---
+- name: show version test with var
+  hosts: "{{ hostnames }}"
+  order: sorted
+
+  tasks:
+    - name: SSH TO GATHER SHOW COMMANDS
+      cisco.ios.ios_command:
+        commands: show version | incl Version
+      register: output 
+
+    - name: print output
+      debug:
+        var: output.stdout_lines
